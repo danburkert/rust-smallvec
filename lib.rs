@@ -26,7 +26,6 @@
 //! Note that this feature requires a nightly compiler (for now).
 
 #![no_std]
-#![cfg_attr(feature = "union", feature(untagged_unions))]
 #![cfg_attr(feature = "specialization", feature(specialization))]
 #![cfg_attr(feature = "may_dangle", feature(dropck_eyepatch))]
 #![deny(missing_docs)]
@@ -1616,7 +1615,7 @@ impl<'a, A: Array> IntoIterator for &'a mut SmallVec<A> {
 }
 
 /// Types that can be used as the backing store for a SmallVec
-pub unsafe trait Array {
+pub unsafe trait Array: Copy {
     /// The type of the array's elements.
     type Item;
     /// Returns the number of items the array can hold.
@@ -1661,7 +1660,7 @@ impl<'a> Drop for SetLenOnDrop<'a> {
 macro_rules! impl_array(
     ($($size:expr),+) => {
         $(
-            unsafe impl<T> Array for [T; $size] {
+            unsafe impl<T> Array for [T; $size] where T: Copy {
                 type Item = T;
                 fn size() -> usize { $size }
             }

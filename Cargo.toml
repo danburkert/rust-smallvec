@@ -12,6 +12,7 @@ readme = "README.md"
 documentation = "https://docs.rs/smallvec/"
 
 [features]
+default = [ "union" ]
 write = []
 union = []
 specialization = []
