@@ -109,13 +109,13 @@ macro_rules! smallvec {
         $crate::SmallVec::from_elem($elem, $n)
     });
     ($($x:expr),*$(,)*) => ({
-        let count = 0usize $(+ smallvec!(@one $x))*;
+        let count = 0usize $(+ $crate::smallvec!(@one $x))*;
         let mut vec = $crate::SmallVec::new();
         if count <= vec.inline_size() {
             $(vec.push($x);)*
             vec
         } else {
-            $crate::SmallVec::from_vec(vec![$($x,)*])
+            $crate::SmallVec::from_vec(std::vec![$($x,)*])
         }
     });
 }
